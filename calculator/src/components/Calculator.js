@@ -1,6 +1,7 @@
 import { evaluate } from "mathjs";
 import React, { useState } from "react";
 
+
 const Calculator = () => {
   const [input, setInput] = useState("");
   const [history, setHistory] = useState([]);
@@ -78,14 +79,16 @@ const Calculator = () => {
     setInput(input.slice(0, -1));
   };
 
+
+
   return (
     <div className="calculator">
       <div className="display">{input}</div>
       <div className="buttons">
-        <button onClick={handleClearClick}>C</button>
-        <button onClick={handleBackspace}>←</button>
-        <button onClick={handlePercentClick}>%</button>
-        <button onClick={() => handleButtonClick("/")}>/</button>
+        <button className="button-clear" onClick={handleClearClick}>C</button>
+        <button className="button-backspace" onClick={handleBackspace}>←</button>
+        <button className="button-percent" onClick={handlePercentClick}>%</button>
+        <button className="button-division" onClick={() => handleButtonClick("/")}>/</button>
 
         <button onClick={() => handleButtonClick("7")}>7</button>
         <button onClick={() => handleButtonClick("8")}>8</button>
@@ -103,6 +106,7 @@ const Calculator = () => {
         <button onClick={() => handleButtonClick("3")}>3</button>
         <button onClick={() => handleButtonClick("+")}>+</button>
 
+        <button onClick={() => handleButtonClick("+-")}>+/-</button> 
         <button onClick={() => handleButtonClick("0")}>0</button>
         <button onClick={() => handleButtonClick(".")}>.</button>
         <button onClick={() => handleEqualClick()}>=</button>

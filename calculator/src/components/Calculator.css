@@ -1,0 +1,84 @@
+.button-clear {
+    background-color: #f44336; 
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .button-clear:hover {
+    background-color: #d32f2f;
+    transform: scale(1.1);
+  }
+  
+  .button-backspace {
+    background-color: #ff9800; 
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .button-backspace:hover {
+    background-color: #f57c00;
+    transform: scale(1.1);
+  }
+  
+  .button-percent {
+    background-color: #4CAF50; 
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .button-percent:hover {
+    background-color: #388E3C;
+    transform: scale(1.1);
+  }
+  
+  .button-division {
+    background-color: #2196F3;
+    color: white;
+    padding: 15px;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .button-division:hover {
+    background-color: #1976D2;
+    transform: scale(1.1);
+  }
+  
+ 
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+  
+  .display {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 15px;
+    text-align: right;
+    padding: 10px;
+    font-size: 24px; 
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
