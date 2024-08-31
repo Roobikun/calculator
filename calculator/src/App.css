@@ -2,18 +2,20 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  overflow-x: hidden; 
+  overflow-x: hidden;
 }
 
 .calculator {
   width: 100%;
-  max-width: 360px; 
+  max-width: 360px;
   margin: 0 auto;
   padding: 20px;
   border: 1px solid #2cbdc2;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  background-color: #ffffff;
+  color: #000000;
 }
 
 .display {
@@ -22,7 +24,7 @@ html, body {
   margin-bottom: 15px;
   text-align: right;
   padding: 10px;
-  font-size: 24px; 
+  font-size: 24px;
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -44,16 +46,23 @@ button {
   background-color: #eee;
   cursor: pointer;
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-  box-sizing: border-box; 
+  box-sizing: border-box;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s; 
+}
+
+button:hover {
+  background-color: #aa3333;
+  color: #ffffff; 
+  transform: scale(1.05); 
 }
 
 button:active {
   background-color: #ddd;
+  transform: scale(0.98);
 }
 
-
 .button-clear {
-  background-color: #f44336; 
+  background-color: #f44336;
   color: white;
   padding: 15px;
   font-size: 20px;
@@ -61,11 +70,12 @@ button:active {
 
 .button-clear:hover {
   background-color: #d32f2f;
+  color: white; /* Цвет текста при наведении */
   transform: scale(1.1);
 }
 
 .button-backspace {
-  background-color: #ff9800; 
+  background-color: #ff9800;
   color: white;
   padding: 15px;
   font-size: 20px;
@@ -73,11 +83,12 @@ button:active {
 
 .button-backspace:hover {
   background-color: #f57c00;
+  color: white; /* Цвет текста при наведении */
   transform: scale(1.1);
 }
 
 .button-percent {
-  background-color: #4CAF50; 
+  background-color: #4CAF50;
   color: white;
   padding: 15px;
   font-size: 20px;
@@ -85,6 +96,7 @@ button:active {
 
 .button-percent:hover {
   background-color: #388E3C;
+  color: white; /* Цвет текста при наведении */
   transform: scale(1.1);
 }
 
@@ -97,6 +109,7 @@ button:active {
 
 .button-division:hover {
   background-color: #1976D2;
+  color: white; /* Цвет текста при наведении */
   transform: scale(1.1);
 }
 
@@ -108,15 +121,14 @@ button:active {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
 }
 
 .button-advanced-toggle:hover {
   background-color: #303f9f;
+  color: white; /* Цвет текста при наведении */
   transform: scale(1.1);
 }
 
-/* Дополнительные функции */
 .advanced-functions {
   display: grid;
   grid-template-rows: repeat(3, auto);
@@ -128,20 +140,22 @@ button:active {
 .advanced-functions button {
   background-color: #f0f0f0;
   color: #333;
-  padding: 15px;
+  padding: 15;
   font-size: 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  box-sizing: border-box;
+  transition: background-color 0.3s, color 0.3s, transform 0.2s;
+  margin: 10px; 
 }
 
 .advanced-functions button:hover {
   background-color: #e0e0e0;
+  color: #333; /* Цвет текста при наведении */
   transform: scale(1.1);
 }
 
-/* История запросов */
 .history {
   margin-top: 20px;
 }
@@ -159,6 +173,72 @@ button:active {
   font-size: 16px;
 }
 
+.light-theme .calculator {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.light-theme .display {
+  background-color: #f9f9f9;
+  border-color: #ccc;
+}
+
+.light-theme button {
+  background-color: #eee;
+  color: #000000;
+}
+
+.dark-theme {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.dark-theme .calculator {
+  background-color: #444444;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.dark-theme .display {
+  background-color: #555555;
+  border-color: #444444;
+}
+
+.dark-theme button {
+  background-color: #555555;
+  color: #ffffff;
+}
+
+.dark-theme button:active {
+  background-color: #666666;
+}
+
+.theme-toggle-button {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-size: 20px;
+}
+
+.dark-theme .theme-toggle-button {
+  background-color: #444444;
+  color: #ffffff;
+}
+
+.dark-theme .theme-toggle-button:hover {
+  background-color: #555555;
+  transform: scale(1.1);
+}
 
 @media (max-width: 600px) {
   .calculator {
@@ -175,6 +255,7 @@ button:active {
   }
 
   .buttons {
+    display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px; 
   }

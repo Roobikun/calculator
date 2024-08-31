@@ -1,19 +1,21 @@
-import { evaluate } from "mathjs";
-import React, { useState } from "react";
+import { evaluate } from 'mathjs';
+import React, { useState } from 'react';
+
 
 const Calculator = () => {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [history, setHistory] = useState([]);
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [theme, setTheme] = useState('light'); // Начальная тема
 
   const isOperator = (char) => {
-    return ["+", "-", "*", "/"].includes(char);
+    return ['+', '-', '*', '/'].includes(char);
   };
 
   const hasDecimalPoint = (str) => {
     const lastPart = str.split(/[+\-*/]/).pop();
-    return lastPart.includes(".");
+    return lastPart.includes('.');
   };
 
   const handleButtonClick = (value) => {
@@ -21,7 +23,7 @@ const Calculator = () => {
 
     if (isOperator(lastChar) && isOperator(value)) {
       setInput(input.slice(0, -1) + value);
-    } else if (value === ".") {
+    } else if (value === '.') {
       if (!hasDecimalPoint(input)) {
         setInput(input + value);
       }
@@ -31,13 +33,13 @@ const Calculator = () => {
   };
 
   const formatNumber = (number) => {
-    const parts = number.toString().split("."); // Разделение целой и дробной части
-    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " "); // Форматирование целой части с пробелами
-    return parts.join("."); // Соединение целой и дробной части обратно с точкой в качестве разделителя
+    const parts = number.toString().split('.');
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return parts.join('.');
   };
 
   const removeSpaces = (str) => {
-    return str.replace(/\s+/g, "");
+    return str.replace(/\s+/g, '');
   };
 
   const handleEqualClick = () => {
@@ -49,16 +51,15 @@ const Calculator = () => {
       setInput(formattedResult);
       setHistory([...history, `${input} = ${formattedResult}`]);
     } catch (error) {
-      console.error("Evaluation error: ", error);
-      setInput("Error");
+      console.error('Evaluation error: ', error);
+      setInput('Error');
     }
   };
 
   const handleClearClick = () => {
-    setInput("");
+    setInput('');
   };
 
-  // Округление до 2-х знаков после запятой
   const roundToTwoDecimalPlaces = (num) => {
     return Math.round((num + Number.EPSILON) * 100) / 100;
   };
@@ -69,11 +70,11 @@ const Calculator = () => {
 
   const handlePercentClick = () => {
     try {
-      const result = evaluate(input) / 100; // Вычисление 1% от текущего значения
+      const result = evaluate(input) / 100;
       setInput(result.toString());
     } catch (error) {
-      console.error("Percent calculation error: ", error);
-      setInput("Error");
+      console.error('Percent calculation error: ', error);
+      setInput('Error');
     }
   };
 
@@ -116,82 +117,92 @@ const Calculator = () => {
           setInput(`${input}${value}`);
       }
     } catch (error) {
-      console.error("Advanced button error: ", error);
-      setInput("Error");
+      console.error('Advanced button error: ', error);
+      setInput('Error');
     }
   };
 
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    document.body.className = `${newTheme}-theme`; // Изменение класса на body
+  };
+
   return (
-    <div className="calculator">
-      <div className="display">{input}</div>
-      <div className={`buttons ${showAdvanced ? 'shifted' : ''}`}>
-        <button className="button-clear" onClick={handleClearClick}>C</button>
-        <button className="button-backspace" onClick={handleBackspace}>←</button>
-        <button className="button-percent" onClick={handlePercentClick}>%</button>
-        <button className="button-division" onClick={() => handleButtonClick("/")}>/</button>
+    <div className={`app ${theme}-theme`}>
+      <button className="theme-toggle-button" onClick={toggleTheme}>
+        {theme === 'light' ? '🌙' : '🌞'}
+      </button>
+      <div className="calculator">
+        <div className="display">{input}</div>
+        <div className={`buttons ${showAdvanced ? 'shifted' : ''}`}>
+          <button className="button-clear" onClick={handleClearClick}>C</button>
+          <button className="button-backspace" onClick={handleBackspace}>←</button>
+          <button className="button-percent" onClick={handlePercentClick}>%</button>
+          <button className="button-division" onClick={() => handleButtonClick('/')}>/</button>
 
-        <button onClick={() => handleButtonClick("7")}>7</button>
-        <button onClick={() => handleButtonClick("8")}>8</button>
-        <button onClick={() => handleButtonClick("9")}>9</button>
-        <button onClick={() => handleButtonClick("*")}>*</button>
+          <button onClick={() => handleButtonClick('7')}>7</button>
+          <button onClick={() => handleButtonClick('8')}>8</button>
+          <button onClick={() => handleButtonClick('9')}>9</button>
+          <button onClick={() => handleButtonClick('*')}>*</button>
 
-        <button onClick={() => handleButtonClick("4")}>4</button>
-        <button onClick={() => handleButtonClick("5")}>5</button>
-        <button onClick={() => handleButtonClick("6")}>6</button>
-        <button onClick={() => handleButtonClick("-")}>-</button>
+          <button onClick={() => handleButtonClick('4')}>4</button>
+          <button onClick={() => handleButtonClick('5')}>5</button>
+          <button onClick={() => handleButtonClick('6')}>6</button>
+          <button onClick={() => handleButtonClick('-')}>-</button>
 
-        <button onClick={() => handleButtonClick("1")}>1</button>
-        <button onClick={() => handleButtonClick("2")}>2</button>
-        <button onClick={() => handleButtonClick("3")}>3</button>
-        <button onClick={() => handleButtonClick("+")}>+</button>
+          <button onClick={() => handleButtonClick('1')}>1</button>
+          <button onClick={() => handleButtonClick('2')}>2</button>
+          <button onClick={() => handleButtonClick('3')}>3</button>
+          <button onClick={() => handleButtonClick('+')}>+</button>
 
-        <button onClick={toggleAdvanced} className="button-advanced-toggle">
-          {showAdvanced ? '-' : '+'}
-        </button>
-        <button onClick={() => handleButtonClick("0")}>0</button>
-        <button onClick={() => handleButtonClick(".")}>.</button>
-        <button onClick={handleEqualClick}>=</button>
-      </div>
-
-      {showAdvanced && (
-        <div className="advanced-functions">
-          <div className="advanced-row">
-            <button onClick={() => handleAdvancedButtonClick('sin')}>sin</button>
-            <button onClick={() => handleAdvancedButtonClick('cos')}>cos</button>
-            <button onClick={() => handleAdvancedButtonClick('tan')}>tan</button>
-            <button onClick={() => handleAdvancedButtonClick('^')}>x²</button>
-            <button onClick={() => handleAdvancedButtonClick('√')}>√</button>
-          </div>
-          <div className="advanced-row">
-            <button onClick={() => handleAdvancedButtonClick('1/x')}>1/x</button>
-            <button onClick={() => handleAdvancedButtonClick('π')}>π</button>
-            <button onClick={() => handleAdvancedButtonClick('e')}>e</button>
-            <button onClick={() => handleAdvancedButtonClick('lg')}>lg</button>
-            <button onClick={() => handleAdvancedButtonClick('ln')}>ln</button>
-          </div>
-          <div className="advanced-row">
-            <button onClick={() => handleAdvancedButtonClick('(')}>(</button>
-            <button onClick={() => handleAdvancedButtonClick(')')}>)</button>
-          </div>
+          <button onClick={toggleAdvanced} className="button-advanced-toggle">
+            {showAdvanced ? '-' : '+'}
+          </button>
+          <button onClick={() => handleButtonClick('0')}>0</button>
+          <button onClick={() => handleButtonClick('.')}>.</button>
+          <button onClick={handleEqualClick}>=</button>
         </div>
-      )}
 
-      <div className="history-toggle">
-        <h2>История запросов:</h2>
-        <button onClick={toggleHistoryVisibility}>
-          {isHistoryVisible ? "Скрыть" : "Показать"}
-        </button>
-      </div>
+        {showAdvanced && (
+          <div className="advanced-functions">
+            <div className="advanced-row">
+              <button onClick={() => handleAdvancedButtonClick('sin')}>sin</button>
+              <button onClick={() => handleAdvancedButtonClick('cos')}>cos</button>
+              <button onClick={() => handleAdvancedButtonClick('tan')}>tan</button>
+              <button onClick={() => handleAdvancedButtonClick('^')}>x²</button>
+              <button onClick={() => handleAdvancedButtonClick('√')}>√</button>
+            </div>
+            <div className="advanced-row">
+              <button onClick={() => handleAdvancedButtonClick('1/x')}>1/x</button>
+              <button onClick={() => handleAdvancedButtonClick('π')}>π</button>
+              <button onClick={() => handleAdvancedButtonClick('e')}>e</button>
+              <button onClick={() => handleAdvancedButtonClick('lg')}>lg</button>
+              <button onClick={() => handleAdvancedButtonClick('ln')}>ln</button>
+            </div>
+            <div className="advanced-row">
+              <button onClick={() => handleAdvancedButtonClick('(')}>(</button>
+              <button onClick={() => handleAdvancedButtonClick(')')}>)</button>
+            </div>
+          </div>
+        )}
 
-      {isHistoryVisible && (
-        <div className="history">
-          <ul>
-            {history.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
+        <div className="history-toggle">
+          <h2>История запросов:</h2>
+          <button onClick={toggleHistoryVisibility}>
+            {isHistoryVisible ? 'Скрыть' : 'Показать'}
+          </button>
+          {isHistoryVisible && (
+            <div className="history">
+              {history.map((item, index) => (
+                <div key={index} className="history-item">
+                  {item}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };
