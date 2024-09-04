@@ -1,13 +1,12 @@
 import { evaluate } from 'mathjs';
-import React, { useState } from 'react';
-
+import React, { useState, useEffect, useCallback } from 'react';
 
 const Calculator = () => {
   const [input, setInput] = useState('');
   const [history, setHistory] = useState([]);
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [theme, setTheme] = useState('light'); // Начальная тема
+  const [theme, setTheme] = useState('light');
 
   const isOperator = (char) => {
     return ['+', '-', '*', '/'].includes(char);
@@ -18,7 +17,7 @@ const Calculator = () => {
     return lastPart.includes('.');
   };
 
-  const handleButtonClick = (value) => {
+  const handleButtonClick = useCallback((value) => {
     const lastChar = input.slice(-1);
 
     if (isOperator(lastChar) && isOperator(value)) {
@@ -30,7 +29,7 @@ const Calculator = () => {
     } else {
       setInput(input + value);
     }
-  };
+  }, [input]);
 
   const formatNumber = (number) => {
     const parts = number.toString().split('.');
@@ -42,7 +41,7 @@ const Calculator = () => {
     return str.replace(/\s+/g, '');
   };
 
-  const handleEqualClick = () => {
+  const handleEqualClick = useCallback(() => {
     try {
       const cleanedInput = removeSpaces(input);
       let result = evaluate(cleanedInput);
@@ -54,7 +53,7 @@ const Calculator = () => {
       console.error('Evaluation error: ', error);
       setInput('Error');
     }
-  };
+  }, [input, history]);
 
   const handleClearClick = () => {
     setInput('');
@@ -78,9 +77,9 @@ const Calculator = () => {
     }
   };
 
-  const handleBackspace = () => {
+  const handleBackspace = useCallback(() => {
     setInput(input.slice(0, -1));
-  };
+  }, [input]);
 
   const toggleAdvanced = () => {
     setShowAdvanced(!showAdvanced);
@@ -125,8 +124,31 @@ const Calculator = () => {
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
-    document.body.className = `${newTheme}-theme`; // Изменение класса на body
+    document.body.className = `${newTheme}-theme`;
   };
+
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      const { key } = event;
+
+      if (/\d/.test(key)) {
+        setInput((prev) => prev + key);
+      } else if (['+', '-', '*', '/'].includes(key)) {
+        setInput((prev) => prev + key);
+      } else if (key === 'Enter') {
+        handleEqualClick();
+      } else if (key === 'Backspace') {
+        handleBackspace();
+      } else if (key === 'Escape') {
+        handleClearClick();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyPress);
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleEqualClick, handleBackspace]); 
 
   return (
     <div className={`app ${theme}-theme`}>
